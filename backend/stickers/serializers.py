@@ -60,3 +60,12 @@ class ShopperSerializer(serializers.ModelSerializer):
         ]
 
 
+class TransactionResultSerializer(serializers.Serializer):
+    """Serializer for transaction processing result."""
+
+    transaction_id = serializers.CharField()
+    shopper_id = serializers.CharField()
+    stickers_earned = serializers.IntegerField()
+    new_balance = serializers.IntegerField()
+    breakdown = serializers.DictField()
+    is_duplicate = serializers.BooleanField()

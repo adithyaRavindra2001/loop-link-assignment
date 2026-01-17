@@ -9,6 +9,8 @@ from .models import Shopper, Transaction
 from .serializers import (
     TransactionInputSerializer,
     ShopperSerializer,
+    TransactionOutputSerializer,
+    TransactionResultSerializer,
 )
 from .services import calculate_stickers
 
@@ -32,6 +34,7 @@ def process_transaction(request):
     Handles idempotency: if transaction_id already exists, returns the existing
     result without double-awarding stickers.
     """
+    import ipdb; ipdb.set_trace()
     serializer = TransactionInputSerializer(data=request.data)
 
     if not serializer.is_valid():
@@ -59,7 +62,7 @@ def process_transaction(request):
     # Calculate stickers
     items = data.get('items', [])
     calc_result = calculate_stickers(items)
-    stickers_earned = calc_result.get('total_stickers', 0)
+    stickers_earned = calc_result.get('stickers_earned', 0)
     total_amount = calc_result.get('total_amount', 0)
 
     # Use atomic transaction to ensure consistency
@@ -82,16 +85,16 @@ def process_transaction(request):
         shopper.sticker_balance += stickers_earned
         shopper.save()
 
-    result = Response({
+    result = TransactionResultSerializer({
         'transaction_id': txn.transaction_id,
         'shopper_id': shopper.shopper_id,
         'stickers_earned': stickers_earned,
         'new_balance': shopper.sticker_balance,
         'breakdown': calc_result['breakdown'],
         'is_duplicate': False,
-    }, status=status.HTTP_201_CREATED)
+    })
 
-    return result
+    return Response(result.data, status=status.HTTP_201_CREATED)
 
 
 @api_view(['GET'])
