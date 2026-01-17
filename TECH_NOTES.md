@@ -47,17 +47,7 @@ Expected: 400 error with validation details
 
 ## AI Tools Usage
 
-This project was built with assistance from Claude (Claude Code CLI). Claude was used for:
-
-- Project structure planning and scaffolding
-- Writing boilerplate code (Django models, serializers, views)
-- React component creation
-- Tailwind CSS styling
-- Documentation generation
-
-All code was reviewed and understood before being committed. The business logic (sticker calculation rules) was implemented according to the specification provided.
-
----
+This project was built with assistance from Claude (Claude Code CLI).
 
 ## Design Decisions
 
