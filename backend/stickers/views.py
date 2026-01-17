@@ -47,7 +47,6 @@ def process_transaction(request):
     transaction_id = data.get('transaction_id')
     shopper_id = data.get('shopper_id')
 
-    # Check for duplicate transaction (idempotency)
     existing_txn = Transaction.objects.filter(transaction_id=transaction_id).first()
     if existing_txn:
         return Response({
@@ -59,18 +58,14 @@ def process_transaction(request):
             'is_duplicate': True,
         }, status=status.HTTP_200_OK)
 
-    # Calculate stickers
     items = data.get('items', [])
     calc_result = calculate_stickers(items)
     stickers_earned = calc_result.get('stickers_earned', 0)
     total_amount = calc_result.get('total_amount', 0)
 
-    # Use atomic transaction to ensure consistency
     with db_transaction.atomic():
-        # Get or create shopper
         shopper, _ = Shopper.objects.get_or_create(shopper_id=shopper_id)
 
-        # Create transaction record
         txn = Transaction.objects.create(
             transaction_id=transaction_id,
             shopper=shopper,
@@ -81,7 +76,6 @@ def process_transaction(request):
             stickers_earned=stickers_earned,
         )
 
-        # Update shopper balance
         shopper.sticker_balance += stickers_earned
         shopper.save()
 
