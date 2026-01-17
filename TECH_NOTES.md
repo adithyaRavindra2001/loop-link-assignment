@@ -70,17 +70,3 @@ This project was built with assistance from Claude (Claude Code CLI).
 3. **Tailwind CSS**: Used for rapid styling with a clean, professional appearance without writing custom CSS.
 
 ---
-
-## What I Would Add With More Time
-
-1. **Unit tests**: Test the sticker calculation service, especially edge cases (zero items, exactly $10, cap boundary)
-
-2. **Transaction submission form**: A UI form to submit test transactions without using curl
-
-3. **Pagination**: For shoppers with many transactions
-
-4. **Search/filter**: Filter transactions by date range or store
-
-5. **Redemption feature**: Allow redeeming stickers for rewards
-
-6. **Better error handling**: More specific error messages and retry logic on the frontend
