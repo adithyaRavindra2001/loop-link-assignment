@@ -34,7 +34,7 @@ def process_transaction(request):
     Handles idempotency: if transaction_id already exists, returns the existing
     result without double-awarding stickers.
     """
-    import ipdb; ipdb.set_trace()
+    import ipdb;
     serializer = TransactionInputSerializer(data=request.data)
 
     if not serializer.is_valid():
